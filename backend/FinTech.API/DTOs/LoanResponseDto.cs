@@ -1,4 +1,6 @@
-﻿namespace FinTech.API.DTOs
+﻿using FinTech.API.Models.Enums;
+
+namespace FinTech.API.DTOs
 {
     public class LoanResponseDto
     {
@@ -16,5 +18,6 @@
         public decimal Principal { get; set; }
         public decimal Interest { get; set; }
         public decimal RemainingBalance { get; set; }
+        public PaymentStatus Status { get; set; }
     }
 }

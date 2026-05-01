@@ -44,7 +44,7 @@ namespace FinTech.API.Factories
                 DateTime targetMonth = startDate.AddMonths(i);
                 int daysInMonth = DateTime.DaysInMonth(targetMonth.Year, targetMonth.Month);
                 int dayToUse = Math.Min(originalDay, daysInMonth);
-                DateTime dueDate = new DateTime(targetMonth.Year, targetMonth.Month, dayToUse);
+                DateTime dueDate = new DateTime(targetMonth.Year, targetMonth.Month, dayToUse, 0, 0, 0, DateTimeKind.Utc);
 
                 // calcs amottization
                 decimal interest = remainingBalance * monthlyRate;

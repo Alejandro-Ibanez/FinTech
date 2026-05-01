@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FinTech.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/loans")]
     public class LoansController(ILoanService loanService) : ControllerBase
     {
         [HttpPost("simulate")]

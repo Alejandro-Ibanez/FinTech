@@ -138,6 +138,7 @@ namespace FinTech.API.Services
                 Principal = s.Principal,
                 Interest = s.Interest,
                 RemainingBalance = s.RemainingBalance,
+                Status = s.Status
             }).ToList()
             };
         }

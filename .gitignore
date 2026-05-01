@@ -1,4 +1,6 @@
-# --- .NET (Backend) ---
+# ============================================
+# .NET (Backend)
+# ============================================
 [Bb]in/
 [Oo]bj/
 *.user
@@ -6,15 +8,47 @@
 *.sln.docuser
 .vs/
 .vscode/
+
+# Configuración sensible (Solo local)
 appsettings.Development.json
+appsettings.Local.json
 
-# --- Node / Next.js (Frontend) ---
-frontend/node_modules/
-frontend/.next/
-frontend/out/
-frontend/build/
-frontend/.env*.local
+# Entity Framework & SQL Server temporales
+*.db
+*.db-shm
+*.db-wal
+[Tt]est[Rr]esults/
 
-# --- OS Files ---
+# ============================================
+# Node / React (Frontend)
+# ============================================
+node_modules/
+dist/
+build/
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs de npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ============================================
+# Herramientas de Despliegue (Railway / Docker)
+# ============================================
+.railway/
+.docker/
+
+# ============================================
+# OS Files
+# ============================================
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db

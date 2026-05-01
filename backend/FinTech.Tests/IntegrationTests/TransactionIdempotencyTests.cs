@@ -13,7 +13,8 @@ namespace FinTech.Tests.IntegrationTests
         {
             // Arrange
             var mockRepo = new Mock<ITransactionRepository>();
-            var service = new TransactionService(mockRepo.Object);
+            var mockLoanRepo = new Mock<ILoanRepository>();
+            var service = new TransactionService(mockRepo.Object, mockLoanRepo.Object);
             var key = "unique-idempotency-key";
             var existingTransaction = new Transaction { Id = Guid.NewGuid(), IdempotencyKey = key };
 

@@ -48,5 +48,11 @@ namespace FinTech.API.Repositories
                             l.Status == LoanStatus.Active))
                 .ToListAsync();
         }
+        public async Task<Loan?> GetByIdWithScheduleAsync(Guid id)
+        {
+            return await context.Loans
+                .Include(l => l.Schedules)
+                .FirstOrDefaultAsync(l => l.Id == id);
+        }
     }
 }

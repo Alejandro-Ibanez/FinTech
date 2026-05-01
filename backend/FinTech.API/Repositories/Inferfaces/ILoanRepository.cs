@@ -9,5 +9,6 @@ namespace FinTech.API.Repositories.Inferfaces
         Task AddAsync(Loan loan);
         Task SaveChangesAsync();
         Task<List<Loan>> GetActiveLoansByUserIdAsync(string userId);
+        Task<Loan?> GetByIdWithScheduleAsync(Guid id);
     }
 }

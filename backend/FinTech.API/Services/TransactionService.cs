@@ -6,16 +6,15 @@ using FinTech.API.Services.Interfaces;
 
 namespace FinTech.API.Services
 {
-    public class TransactionService(ITransactionRepository transactionRepository) : ITransactionService
+    public class TransactionService(ITransactionRepository transactionRepository, ILoanRepository loanRepository) : ITransactionService
     {
         public async Task<TransactionResponseDto> CreateTransactionAsync(TransactionRequestDto dto)
         {
-            //Applying Idempotency
             var existing = await transactionRepository.GetByKeyAsync(dto.IdempotencyKey);
-            if (existing != null)
-            {
-                return MapToResponse(existing);
-            }
+            if (existing != null) return MapToResponse(existing);
+
+            var loan = await loanRepository.GetByIdWithScheduleAsync(dto.LoanId);
+            if (loan == null) throw new Exception("Préstamo no encontrado");
 
             var transaction = new Transaction
             {
@@ -30,12 +29,32 @@ namespace FinTech.API.Services
 
             try
             {
-                // Real payment service process
-                transaction.Status = TransactionStatus.Completed;
+                var nextInstallment = loan.Schedules
+                    .Where(s => s.Status != PaymentStatus.Paid)
+                    .OrderBy(s => s.PaymentNumber)
+                    .FirstOrDefault();
+
+                if (nextInstallment != null)
+                {
+                    if (dto.Amount >= nextInstallment.TotalPayment)
+                    {
+                        nextInstallment.Status = PaymentStatus.Paid;
+                        transaction.Status = TransactionStatus.Completed;
+                    }
+                    else
+                    {
+                        throw new Exception("El monto no cubre la cuota mínima.");
+                    }
+                }
+                else
+                {
+                    throw new Exception("El préstamo ya se encuentra totalmente pagado.");
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 transaction.Status = TransactionStatus.Failed;
+                throw;
             }
 
             await transactionRepository.AddAsync(transaction);
